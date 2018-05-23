@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+     <script src="https://code.jquery.com/jquery-3.3.1.min.js">
+    </script>
+    <title>Untitled Document</title>
+<style>
+  *{margin:0;
+      padding: 0;
+  }
+  .main_P{width: 100%;}
+
+  .menu{
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+  }
+
+  .menu ul{
+    background-color: pink;
+  }
+
+  .menu ul li{
+    background-color: peru;
+    width:10%;
+    min-width: 80px;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  header{
+    height: 100vh;
+    width: 100%;
+    background-color: brown;
+    overflow: hidden;
+  }
+
+  header #video{height: 100%;}
+  section{
+    height: 100vh;
+    width: 100%;
+    background-color: yellow;
+  }
+  article{
+    height: 100vh;
+    width: 100%;
+    background-color: skyblue;
+  }
+  footer{
+    height: 100vh;
+    width: 100%;
+    background-color: orange;
+  }
+
+</style>
+  </head>
+
+  <body>
+  <div class="main_P">
+   <div class="menu">
+     <ul>
+       <li id="menu1">menu1</li>
+       <li id="menu2">menu2</li>
+       <li id="menu3">menu3</li>
+       <li id="menu4">menu4</li>
+     </ul>
+   </div>
+    <header>
+      <video id="video" src="movie.mp4" autoplay loop muted poster="posterimage.jpg"></video>
+    </header>
+
+
+    <section>
+
+    </section>
+
+
+    <article>
+
+    </article>
+
+
+    <footer>
+
+    </footer>
+  </div>
+
+
+  </body>
+     <script type="text/javascript">
+      $(document).ready(function(){
+        var position;
+        start_position();
+        var video = document.getElementById('video');
+        var video_h = $('#video').height();
+
+        function start_position() {
+           position = $("footer").offset();
+           $("body,html").stop().animate({scrollTop:position.top},0);
+           position = $("header").offset();
+           $("body,html").stop().animate({scrollTop:position.top},1000);
+           setTimeout(function(){
+             $(".menu").stop().animate({opacity:0.5,top:25},1000);
+           },1000);
+         }
+
+        $(document).scroll(function(){
+          var st = $(this).scrollTop();
+          if(st < 50){
+            $(".menu").stop().animate({opacity:0.5,top:25});
+          }else if(st > 50){
+            $(".menu").stop().animate({opacity:1,top:0});
+          }
+          if (st>video_h/2){
+            video.pause();
+          }else {
+            video.play();
+          }
+        });
+// 스크롤 이벤트
+        var count = 0;
+        var scrollEvent = false;
+        $(document).on("mousewheel",function (c){
+          var m = c.originalEvent.wheelDelta;
+          var sb = $("header").height();
+          if (m>1 && scrollEvent == false){
+            console.log("업");
+            scrollEvent = true;
+            count--;
+            $("html,body").stop().animate({scrollTop:sb*count},
+              {duration:500,complete: function(){
+              scrollEvent = false;
+            }});
+          }else if (m<1&& scrollEvent == false){
+            console.log("다운");
+            scrollEvent = true;
+            count++;
+            $("html,body").stop().animate({scrollTop:sb*count},
+              {duration:500,complete: function(){
+            scrollEvent = false;
+          }});
+          }
+          console.log(m);
+        });
+
+// 메뉴1,2,3,4
+        $("#menu1").click(function(){
+          position = $("header").offset();
+          $("body,html").stop().animate({scrollTop:position.top},500);
+        });
+        $("#menu2").click(function(){
+          position = $("section").offset();
+          $("body,html").stop().animate({scrollTop:position.top},500);
+        });
+        $("#menu3").click(function(){
+          position = $("article").offset();
+          $("body,html").stop().animate({scrollTop:position.top},500);
+        });
+        $("#menu4").click(function(){
+          position = $("footer").offset();
+          $("body,html").stop().animate({scrollTop:position.top},500);
+        });
+
+      });
+      menu_change();
+
+      function menu_change() {
+          functionName();
+          var number = wheel_count+1;
+          $("#menu"+number).html("메뉴"+number);
+          function functionName() {
+
+          }
+      }
+    </script>
